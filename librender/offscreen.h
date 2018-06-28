@@ -1,9 +1,10 @@
 #ifndef LIBRENDER_OFFSCREEN_H
 #define LIBRENDER_OFFSCREEN_H
 
+
 #include "GL/glew.h"
-#include "GL/gl.h"
-#include "GL/glu.h"
+#include "OpenGL/gl.h"
+#include "OpenGL/glu.h"
 #include "GL/glut.h"
 
 class OffscreenGL {

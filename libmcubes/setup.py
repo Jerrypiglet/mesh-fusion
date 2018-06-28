@@ -21,7 +21,7 @@ mcubes_module = Extension(
         "marchingcubes.cpp"
     ],
     language="c++",
-    extra_compile_args=['-std=c++11'],
+    extra_compile_args=[],
     include_dirs=[numpy_include_dir]
 )
 
