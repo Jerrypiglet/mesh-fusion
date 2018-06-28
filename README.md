@@ -77,7 +77,7 @@ First, scale the models using:
 Now the models can be rendered, per default, 100 views (uniformly sampled
 on a sphere) will be used:
 
-    2_fusion.py --mode=render --in_dir=examples/1_scaled/ --depth_dir=examples/2_depth/ --out_dir=examples/2_watertight/
+    python 2_fusion.py --mode=render --in_dir=examples/1_scaled/ --depth_dir=examples/2_depth/ --out_dir=examples/2_watertight/
 
 The details of rendering can be controlled using the following options:
 
