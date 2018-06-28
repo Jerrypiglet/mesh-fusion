@@ -1,5 +1,5 @@
 # Watertight and Simplified Meshes through TSDF Fusion
-
+## For Mac (Rui)
 This repository contains a simply Python pipeline for obtaining watertight
 and simplified meshes from arbitrary triangular meshes, given in `.off` format.
 The approach is largely based on adapted versions of Gernot Riegler's
