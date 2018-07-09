@@ -10,7 +10,7 @@ import ntpath
 import librender
 import libmcubes
 
-use_gpu = True
+use_gpu = False
 if use_gpu:
     import libfusiongpu as libfusion
     from libfusiongpu import tsdf_gpu as compute_tsdf
