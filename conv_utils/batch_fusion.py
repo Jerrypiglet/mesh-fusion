@@ -139,7 +139,7 @@ if __name__ == '__main__':
         # print(vertices.shape)
 
         off_file = os.path.join(options.out_dir, ntpath.basename(filepath))
-        libmcubes.export_off(vertices, triangles, off_file)
+        # libmcubes.export_off(vertices, triangles, off_file)
 
         """
         Revert to original scales

@@ -66,6 +66,11 @@ For building follow (illustrated for the GPU version):
     python setup.py build_ext --inplace
 
 ## Usage
+### In all for converting the Apolloscape models
+./conv_utils/: ``` python batch_fusion.py``
+One sample of the result: (left) original mesh, (right) watertight mesh generated with mesh fusion:
+![图片](http://agroup-bos.su.bcebos.com/4d6cd20ec218183e3c1d576996e82a34a61281f4)
+### Step-by-step conversion
 
 Usage is illustrated on the shipped examples in `examples/0_in` taken 
 from [ModelNet](http://modelnet.cs.princeton.edu/).
@@ -146,3 +151,5 @@ Redistribution and use in source and binary forms, with or without modification,
 * Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
