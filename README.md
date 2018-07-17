@@ -72,8 +72,10 @@ For building follow (illustrated for the GPU version):
 One sample of the result: 
 
 (left) original mesh, (right) watertight mesh generated with mesh fusion:
+![](https://lh3.googleusercontent.com/-7yhymUGr6Y0/W04nTDR3jWI/AAAAAAAAK7s/RkL9sDVyOXw4oJRxAe2Rwyl3JptS2OV3ACHMYCw/I/15318485237297.jpg)
+<!--
 ![图片](http://agroup-bos.su.bcebos.com/4d6cd20ec218183e3c1d576996e82a34a61281f4)
-### Step-by-step conversion
+-->### Step-by-step conversion
 
 Usage is illustrated on the shipped examples in `examples/0_in` taken 
 from [ModelNet](http://modelnet.cs.princeton.edu/).
