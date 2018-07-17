@@ -55,11 +55,17 @@ if __name__ == '__main__':
     files_unfiltered = scale_tools.read_directory(options.in_dir)
     files = [file for file in files_unfiltered if '.off' in file]
     print('= Found %s OFFs in %s'%(len(files), options.in_dir))
+    print(files)
     timer = common.Timer()
     Rs = fusion_tools.get_views()
 
     for idx, filepath in enumerate(files):
         print('=== Processing %d/%d OFFs...'%(idx+1, len(files)))
+
+        off_file_out = os.path.join(options.out_dir, ntpath.basename(filepath)).replace('.off', '_ori_scale.off')
+        if os.path.isfile(off_file_out):
+            print('Output OFF exists. Skipped.')
+            continue
         """
         scale all found OFF files
         """
@@ -138,8 +144,8 @@ if __name__ == '__main__':
         # vertices = vertices[:, [2, 1, 0]]
         # print(vertices.shape)
 
-        off_file = os.path.join(options.out_dir, ntpath.basename(filepath))
-        # libmcubes.export_off(vertices, triangles, off_file)
+        off_file = os.path.join(options.out_dir, '0_scaled_' + ntpath.basename(filepath))
+        libmcubes.export_off(vertices, triangles, off_file)
 
         """
         Revert to original scales
@@ -150,7 +156,7 @@ if __name__ == '__main__':
         mesh.scale(tuple(scales_back))
         translations_back = [-translation for translation in translation]
         mesh.translate(tuple(translations_back))
-        mesh.to_off(off_file.replace('.off', '_ori_scale.off'))
+        mesh.to_off(os.path.join(options.out_dir, ntpath.basename(filepath)).replace('.off', '_ori_scale.off'))
 
         min, max = mesh.extents()
         if options.log_scales:
