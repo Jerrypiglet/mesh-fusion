@@ -68,7 +68,10 @@ For building follow (illustrated for the GPU version):
 ## Usage
 ### In all for converting the Apolloscape models
 ./conv_utils/: `python batch_fusion.py`
-One sample of the result: (left) original mesh, (right) watertight mesh generated with mesh fusion:
+
+One sample of the result: 
+
+(left) original mesh, (right) watertight mesh generated with mesh fusion:
 ![图片](http://agroup-bos.su.bcebos.com/4d6cd20ec218183e3c1d576996e82a34a61281f4)
 ### Step-by-step conversion
 
