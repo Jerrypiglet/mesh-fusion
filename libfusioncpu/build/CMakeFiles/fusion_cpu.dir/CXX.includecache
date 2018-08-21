@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/ruizhu/Documents/mesh-fusion/libfusioncpu/fusion.cpp
+fusion.h
+/Users/ruizhu/Documents/mesh-fusion/libfusioncpu/fusion.h
+cmath
+-
+vector
+-
+omp.h
+-
+
+/Users/ruizhu/Documents/mesh-fusion/libfusioncpu/fusion.h
+cstdio
+-
+cmath
+-
+

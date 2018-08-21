@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -msse -msse2 -msse3 -msse4.2 -fPIC -D_FORCE_INLINES -Wall -O3 -DNDEBUG -dynamiclib -Wl,-headerpad_max_install_names  -o libfusion_cpu.dylib -install_name @rpath/libfusion_cpu.dylib CMakeFiles/fusion_cpu.dir/fusion.cpp.o 
