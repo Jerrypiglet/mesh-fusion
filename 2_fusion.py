@@ -10,6 +10,8 @@ import ntpath
 import librender
 import libmcubes
 
+import scipy.io
+
 use_gpu = False
 if use_gpu:
     import libfusiongpu as libfusion
@@ -69,15 +71,15 @@ class Fusion:
         parser.add_argument('--depth_dir', type=str, help='Path to depth directory; files are overwritten!')
         parser.add_argument('--out_dir', type=str, help='Path to output directory; files within are overwritten!')
         parser.add_argument('--n_views', type=int, default=100, help='Number of views per model.')
-        parser.add_argument('--image_height', type=int, default=640, help='Depth image height.')
-        parser.add_argument('--image_width', type=int, default=640, help='Depth image width.')
-        parser.add_argument('--focal_length_x', type=float, default=640, help='Focal length in x direction.')
-        parser.add_argument('--focal_length_y', type=float, default=640, help='Focal length in y direction.')
-        parser.add_argument('--principal_point_x', type=float, default=320, help='Principal point location in x direction.')
-        parser.add_argument('--principal_point_y', type=float, default=320, help='Principal point location in y direction.')
+        parser.add_argument('--image_height', type=int, default=640/4, help='Depth image height.')
+        parser.add_argument('--image_width', type=int, default=640/4, help='Depth image width.')
+        parser.add_argument('--focal_length_x', type=float, default=640/4, help='Focal length in x direction.')
+        parser.add_argument('--focal_length_y', type=float, default=640/4, help='Focal length in y direction.')
+        parser.add_argument('--principal_point_x', type=float, default=320/4, help='Principal point location in x direction.')
+        parser.add_argument('--principal_point_y', type=float, default=320/4, help='Principal point location in y direction.')
 
         parser.add_argument('--depth_offset_factor', type=float, default=1.5, help='The depth maps are offsetted using depth_offset_factor*voxel_size.')
-        parser.add_argument('--resolution', type=float, default=256, help='Resolution for fusion.')
+        parser.add_argument('--resolution', type=float, default=64, help='Resolution for fusion.')
         parser.add_argument('--truncation_factor', type=float, default=10, help='Truncation for fusion is derived as truncation_factor*voxel_size.')
 
         return parser
@@ -255,6 +257,7 @@ class Fusion:
 
         assert os.path.exists(self.options.depth_dir)
         common.makedir(self.options.out_dir)
+        common.makedir('4_tsdf')
 
         files = self.read_directory(self.options.depth_dir)
         timer = common.Timer()
@@ -264,7 +267,6 @@ class Fusion:
 
             # As rendering might be slower, we wait for rendering to finish.
             # This allows to run rendering and fusing in parallel (more or less).
-
             depths = common.read_hdf5(filepath)
 
             timer.reset()
@@ -272,12 +274,49 @@ class Fusion:
             tsdf = tsdf[0]
 
             vertices, triangles = libmcubes.marching_cubes(-tsdf, 0)
+            print tsdf.shape
+            np.save(os.path.join('4_tsdf', ntpath.basename(filepath)[:-3]).replace('.off', ''), -tsdf)
             vertices /= self.options.resolution
             vertices -= 0.5
 
             off_file = os.path.join(self.options.out_dir, ntpath.basename(filepath)[:-3])
             libmcubes.export_off(vertices, triangles, off_file)
             print('[Data] wrote %s (%f seconds)' % (off_file, timer.elapsed()))
+
+            # mesh = common.Mesh.from_off(off_file)
+            # s_t = scipy.io.loadmat(off_file.replace('2_watertight', '.').replace('.off', '.mat'))
+            # # scales_ori = (1./s_t['scales'][0][0], 1./s_t['scales'][0][1], 1./s_t['scales'][0][2])
+            # # translation_ori = (-s_t['translation'][0][0], -s_t['translation'][0][1], -s_t['translation'][0][2])
+
+            # sizes_ori = (s_t['sizes'][0][0], s_t['sizes'][0][1], s_t['sizes'][0][2])
+
+            # # print scales, translation
+
+            # min, max = mesh.extents()
+            # total_min = np.min(np.array(min))
+            # total_max = np.max(np.array(max))
+
+            # # Set the center (although this should usually be the origin already).
+            # centers = (
+            #     (min[0] + max[0]) / 2,
+            #     (min[1] + max[1]) / 2,
+            #     (min[2] + max[2]) / 2
+            # )
+            # # Scales all dimensions equally.
+            # sizes = (
+            #     total_max - total_min,
+            #     total_max - total_min,
+            #     total_max - total_min
+            # )
+            # translation = (
+            #     -centers[0],
+            #     -centers[1],
+            #     -centers[2]
+            # )
+
+            # mesh.translate(translation)
+            # mesh.scale((sizes_ori[0]/sizes[0], sizes_ori[1]/sizes[1], sizes_ori[2]/sizes[2]))
+            # mesh.to_off(off_file)
 
 if __name__ == '__main__':
     app = Fusion()

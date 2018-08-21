@@ -2,6 +2,7 @@ import os
 import common
 import argparse
 import numpy as np
+import scipy.io
 
 class Scale:
     """
@@ -50,6 +51,7 @@ class Scale:
 
         assert os.path.exists(self.options.in_dir)
         common.makedir(self.options.out_dir)
+        common.makedir('1_s_t')
         files = self.read_directory(self.options.in_dir)
 
         for filepath in files:
@@ -86,14 +88,18 @@ class Scale:
             mesh.translate(translation)
             mesh.scale(scales)
 
-            print('[Data] %s extents before %f - %f, %f - %f, %f - %f' % (os.path.basename(filepath), min[0], max[0], min[1], max[1], min[2], max[2]))
-            min, max = mesh.extents()
-            print('[Data] %s extents after %f - %f, %f - %f, %f - %f' % (os.path.basename(filepath), min[0], max[0], min[1], max[1], min[2], max[2]))
+            print scales, translation
+
+            # print('[Data] %s extents before %f - %f, %f - %f, %f - %f' % (os.path.basename(filepath), min[0], max[0], min[1], max[1], min[2], max[2]))
+            # min, max = mesh.extents()
+            # print('[Data] %s extents after %f - %f, %f - %f, %f - %f' % (os.path.basename(filepath), min[0], max[0], min[1], max[1], min[2], max[2]))
 
             # May also switch axes if necessary.
-            #mesh.switch_axes(1, 2)
+            mesh.switch_axes(0, 2)
 
             mesh.to_off(os.path.join(self.options.out_dir, os.path.basename(filepath)))
+
+            scipy.io.savemat(os.path.join('1_s_t', os.path.basename(filepath)).replace('.off', '.mat'), {'translation':translation, 'scales':scales, 'sizes':sizes})
 
 if __name__ == '__main__':
     app = Scale()

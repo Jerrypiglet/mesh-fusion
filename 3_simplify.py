@@ -52,13 +52,17 @@ class Simplification:
         assert os.path.exists(self.options.in_dir)
         common.makedir(self.options.out_dir)
         files = self.read_directory(self.options.in_dir)
+        print files
 
-        for filepath in files:
-            os.system('meshlabserver -i %s -o %s -s %s' % (
+        for filepath in files[0:1]:
+            print filepath
+            command = '/Applications/meshlab.app/Contents/MacOS/meshlabserver -i %s -o %s -s %s' % (
                 filepath,
                 os.path.join(self.options.out_dir, ntpath.basename(filepath)),
                 self.simplification_script
-            ))
+            )
+            print command
+            os.system(command)
 
 if __name__ == '__main__':
     app = Simplification()
