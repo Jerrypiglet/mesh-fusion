@@ -31,9 +31,9 @@ if __name__ == '__main__':
 
     # os.system('cp original/*.off 0_in/')
 
-    print(toBlue('-- Rescaling..'))
-    command_1_scale = 'python ../../1_scale.py --in_dir=0_in --out_dir=1_scaled'
-    os.system(command_1_scale)
+    # print(toBlue('-- Rescaling..'))
+    # command_1_scale = 'python ../../1_scale.py --in_dir=0_in --out_dir=1_scaled'
+    # os.system(command_1_scale)
     print(toBlue('-- Rendering..'))
     command_2_render = 'python ../../2_fusion.py --mode=render --in_dir=1_scaled --depth_dir=2_depth --out_dir=2_watertight'
     os.system(command_2_render)

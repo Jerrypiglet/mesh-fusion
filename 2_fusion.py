@@ -9,6 +9,7 @@ import ntpath
 # Import shipped libraries.
 import librender
 import libmcubes
+from skimage import measure
 
 import scipy.io
 
@@ -274,6 +275,7 @@ class Fusion:
             tsdf = tsdf[0]
 
             vertices, triangles = libmcubes.marching_cubes(-tsdf, 0)
+            # vertices, triangles, _, _ = measure.marching_cubes_lewiner(-tsdf, 0)
             print tsdf.shape
             np.save(os.path.join('4_tsdf', ntpath.basename(filepath)[:-3]).replace('.off', ''), -tsdf)
             vertices /= self.options.resolution
@@ -283,40 +285,40 @@ class Fusion:
             libmcubes.export_off(vertices, triangles, off_file)
             print('[Data] wrote %s (%f seconds)' % (off_file, timer.elapsed()))
 
-            # mesh = common.Mesh.from_off(off_file)
-            # s_t = scipy.io.loadmat(off_file.replace('2_watertight', '.').replace('.off', '.mat'))
-            # # scales_ori = (1./s_t['scales'][0][0], 1./s_t['scales'][0][1], 1./s_t['scales'][0][2])
-            # # translation_ori = (-s_t['translation'][0][0], -s_t['translation'][0][1], -s_t['translation'][0][2])
+            mesh = common.Mesh.from_off(off_file)
+            s_t = scipy.io.loadmat(off_file.replace('2_watertight', '1_s_t').replace('.off', '.mat'))
+            # scales_ori = (1./s_t['scales'][0][0], 1./s_t['scales'][0][1], 1./s_t['scales'][0][2])
+            # translation_ori = (-s_t['translation'][0][0], -s_t['translation'][0][1], -s_t['translation'][0][2])
 
-            # sizes_ori = (s_t['sizes'][0][0], s_t['sizes'][0][1], s_t['sizes'][0][2])
+            sizes_ori = (s_t['sizes'][0][0], s_t['sizes'][0][1], s_t['sizes'][0][2])
 
-            # # print scales, translation
+            # print scales, translation
 
-            # min, max = mesh.extents()
-            # total_min = np.min(np.array(min))
-            # total_max = np.max(np.array(max))
+            min, max = mesh.extents()
+            total_min = np.min(np.array(min))
+            total_max = np.max(np.array(max))
 
-            # # Set the center (although this should usually be the origin already).
-            # centers = (
-            #     (min[0] + max[0]) / 2,
-            #     (min[1] + max[1]) / 2,
-            #     (min[2] + max[2]) / 2
-            # )
-            # # Scales all dimensions equally.
-            # sizes = (
-            #     total_max - total_min,
-            #     total_max - total_min,
-            #     total_max - total_min
-            # )
-            # translation = (
-            #     -centers[0],
-            #     -centers[1],
-            #     -centers[2]
-            # )
+            # Set the center (although this should usually be the origin already).
+            centers = (
+                (min[0] + max[0]) / 2,
+                (min[1] + max[1]) / 2,
+                (min[2] + max[2]) / 2
+            )
+            # Scales all dimensions equally.
+            sizes = (
+                total_max - total_min,
+                total_max - total_min,
+                total_max - total_min
+            )
+            translation = (
+                -centers[0],
+                -centers[1],
+                -centers[2]
+            )
 
-            # mesh.translate(translation)
-            # mesh.scale((sizes_ori[0]/sizes[0], sizes_ori[1]/sizes[1], sizes_ori[2]/sizes[2]))
-            # mesh.to_off(off_file)
+            mesh.translate(translation)
+            mesh.scale((sizes_ori[0]/sizes[0], sizes_ori[1]/sizes[1], sizes_ori[2]/sizes[2]))
+            mesh.to_off(off_file)
 
 if __name__ == '__main__':
     app = Fusion()
